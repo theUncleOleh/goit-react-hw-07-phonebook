@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { itemsSelectors } from 'redux/contacts';
 import { itemsOperations } from 'redux/contacts';
 // import { add, remove } from '../../redux/contacts/items-actions';
-import { nanoid } from 'nanoid';
+
 import { toast } from 'react-toastify';
 import Form from 'components/Form';
 import Filter from 'components/Filter';
@@ -51,13 +51,13 @@ export default function ContactList() {
   const deleteContact = id => {
     // dispatch(remove(id));
   };
-  const numberFormatting = number => {
-    const array = [...number];
-    for (let i = 3; i < array.length - 1; i += 3) {
-      array.splice(i, 0, '-');
-    }
-    return array.join('');
-  };
+  // const numberFormatting = number => {
+  //   const array = [...number];
+  //   for (let i = 3; i < array.length - 1; i += 3) {
+  //     array.splice(i, 0, '-');
+  //   }
+  //   return array.join('');
+  // };
   useEffect(() => {
     dispatch(itemsOperations.fetchContacts());
   }, [dispatch]);
