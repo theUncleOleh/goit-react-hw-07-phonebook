@@ -4,46 +4,42 @@ import { Fragment, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import s from './ContactList.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getContactsSelector,
-  getFilterSelector,
-} from '../../redux/contacts/items-selectors';
-import * as itemsOpertions from '../../redux/contacts/itemsOperations';
+import { itemsSelectors } from 'redux/contacts';
+import { itemsOperations } from 'redux/contacts';
 // import { add, remove } from '../../redux/contacts/items-actions';
 import { nanoid } from 'nanoid';
 import { toast } from 'react-toastify';
-import Form from '../Form/Form';
-import Filter from '../Filter/Filter';
+import Form from 'components/Form';
+import Filter from 'components/Filter';
 
 export default function ContactList() {
   const dispatch = useDispatch();
-  const contacts = useSelector(getContactsSelector);
-  const value = useSelector(getFilterSelector);
+  const contacts = useSelector(itemsSelectors.getContactsSelector);
+  const value = useSelector(itemsSelectors.getFilterSelector);
   console.log(contacts);
   console.log(value);
-  const addContacts = (name, number) => {
-    const newName = checkName(name);
-    const formNumber = numberFormatting(number);
-    const contact = {
-      id: nanoid(),
-      name,
-      number: formNumber,
-    };
 
-    if (newName) {
-      return toast.error(`${name} is already in contacts`);
-    }
-    // dispatch(add(contact));
+  const addContacts = contact => {
+    // dispatch(itemsOperations.addContacts(contact));
 
-    toast.success(`${name} was added to contacts!`);
-  };
-
-  const checkName = name => {
-    const normalyzeName = name.toLocaleLowerCase();
-    return contacts.find(
-      ({ name }) => name.toLocaleLowerCase() === normalyzeName
+    const toNormalizeName = contact.name.toLocaleLowerCase();
+    const name = contacts.find(
+      ({ name }) => name.toLocaleLowerCase() === toNormalizeName
     );
+
+    if (name) {
+      return toast.error(`${contact.name} is already in contacts`);
+    }
+    dispatch(itemsOperations.addContacts(contact));
+    toast.success(`${contact.name} was added to contacts!`);
   };
+  // const checkName = ({ name }) => {
+  //   const toNormalizeName = name.toLocaleLowerCase();
+  //   return contacts.find(
+  //     ({ name }) => name.toLocaleLowerCase() === toNormalizeName
+  //   );
+  // };
+
   // const getVisibleContacts = () => {
   //   return contacts.filter(contact =>
   //     contact.name.toLowerCase().includes(value.toLocaleLowerCase())
@@ -63,44 +59,33 @@ export default function ContactList() {
     return array.join('');
   };
   useEffect(() => {
-    dispatch(itemsOpertions.fetchContacts());
+    dispatch(itemsOperations.fetchContacts());
   }, [dispatch]);
 
   return (
-    // <div>
-    //   {contacts.length > 0 && (
-    //     <ul>
-    //       {contacts.map(contact => (
-    //         <li key={contact.id}>
-    //           <img src={contact.avatar} alt={contact.name} />
-    //           <p>
-    //             {contact.name} : {contact.phone}
-    //           </p>
-    //         </li>
-    //       ))}
-    //     </ul>
-    //   )}
-    // </div>
     <Fragment>
       <Form onSubmit={addContacts} />
       <Filter />
       <h2 className={s.title}>Contacts</h2>
-      <ul className={s.list}>
-        {contacts.map(contact => (
-          <li key={contact.id} className={s.item}>
-            <p className={s.graf}>
-              {contact.name}: {contact.phone}
-            </p>
-            <button
-              type="button"
-              className={s.button}
-              onClick={() => deleteContact(contact.id)}
-            >
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
+      {contacts.length > 0 && (
+        <ul className={s.list}>
+          {contacts.map(contact => (
+            <li key={contact.id} className={s.item}>
+              <p className={s.graf}>
+                {contact.name}: {contact.phone}
+              </p>
+              <button
+                type="button"
+                className={s.button}
+                onClick={() => deleteContact(contact.id)}
+              >
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
       <ToastContainer />
     </Fragment>
   );

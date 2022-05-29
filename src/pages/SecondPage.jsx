@@ -1,5 +1,5 @@
-import PageHeading from '../components/PageHeading/PageHeading';
-import ButtonToBack from '../components/ButtonToBack/ButtonToBack';
+import PageHeading from 'components/PageHeading';
+import ButtonToBack from 'components/ButtonToBack';
 export default function SecondPage() {
   return (
     <div>

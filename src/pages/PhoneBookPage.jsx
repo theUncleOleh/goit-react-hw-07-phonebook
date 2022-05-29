@@ -1,5 +1,5 @@
-import PageHeading from '../components/PageHeading/PageHeading';
-import ContactList from '../components/ContactList/ContactList';
+import PageHeading from 'components/PageHeading';
+import ContactList from 'components/ContactList';
 
 export default function PhoneBookPage() {
   return (
