@@ -1,6 +1,6 @@
-// import { createReducer, combineReducers } from '@reduxjs/toolkit';
-// import { fetchContacts } from './itemsOperations';
-// import * as ContactsActions from './items-actions';
+import { createReducer } from '@reduxjs/toolkit';
+
+import * as ContactsActions from './items-actions';
 
 // export const items = createReducer([], {
 //   [fetchContacts.fulfilled]: (_, action) => action.payload,
@@ -24,9 +24,9 @@
 //   [fetchContacts.pending]: () => null,
 // });
 
-// export const filterItems = createReducer('', {
-//   [ContactsActions.filter]: (_, action) => action.payload,
-// });
+export const filterItems = createReducer('', {
+  [ContactsActions.filter]: (state, action) => (state.filter = action.payload),
+});
 
 // export const reducers = combineReducers({
 //   items,

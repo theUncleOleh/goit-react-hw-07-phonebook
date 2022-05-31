@@ -1,15 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
 // import { middleware } from './contacts/items-persistor';
-// // import { persistStore } from 'redux-persist';
+import { filterItems } from './contacts/items-slice';
 // import { reducers } from './contacts/items-reducer';
-import {contactsApi} from './contacts/itemsOperations';
+import { contactsApi } from './contacts/itemsOperations';
 const store = configureStore({
   reducer: {
     [contactsApi.reducerPath]: contactsApi.reducer,
-  }, 
-  middleware: (getDefaultMiddleware) =>[...getDefaultMiddleware(), contactsApi.middleware ]
-  
-})
+    filter: filterItems,
+  },
+  middleware: getDefaultMiddleware => [
+    ...getDefaultMiddleware(),
+    contactsApi.middleware,
+  ],
+});
 
 export {store};
 // const store = configureStore({
