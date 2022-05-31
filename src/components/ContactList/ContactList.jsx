@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import s from './ContactList.module.css';
 import { useSelector } from 'react-redux';
-import { getFilterSelector } from 'redux/contacts/items-selectors';
+// import { getFilterSelector } from 'redux/contacts/items-selectors';
 //  import { itemsOperations } from 'redux/contacts';
 import {
   useGetAllContactsQuery,
@@ -20,7 +20,7 @@ export default function ContactList() {
   const { data: contacts, isLoading, error } = useGetAllContactsQuery();
   const [deleteContact, { isLoading: isDeliting }] = useDeleteContactMutation();
   const [createContact] = useAddContactMutation();
-  const filter = useSelector(getFilterSelector);
+  const filter = useSelector(state=> state.filter.value);
   console.log(filter);
   console.log(contacts);
 
@@ -42,18 +42,22 @@ export default function ContactList() {
     createContact(contact);
     toast.success(`${contact.name} was added to contacts!`);
   };
-  console.log(contacts);
+  
+let visibleContacts = [];
+const getFilteringContactsServer = () => {
+    const normalizeFiltr = filter.toLowerCase();
+    return contacts.filter(({ name }) =>
+      name.toLowerCase().includes(normalizeFiltr)
+    );
+  };  
+  if (!isLoading && !error) {
+    // console.log(contacts);
+    visibleContacts = getFilteringContactsServer();
+  }
+  console.log(visibleContacts);
 
-  // const getVisibleContacts = () => {
-  //   contacts.filter(contact =>
-  //     contact.name.toLowerCase().includes(value.toLocaleLowerCase())
-  //   );
-  // };
-  // const visibleContacts = getVisibleContacts();
-  // const visibleContacts = contacts.filter(contact =>
-  //   contact.name.toLowerCase().includes(filter.toLocaleLowerCase())
-  // );
-  // console.log(visibleContacts);
+  
+  
   // const deleteContact = id => {
   //   // dispatch(remove(id));
   // };
@@ -75,7 +79,7 @@ export default function ContactList() {
       ) : contacts ? (
         <>
           <ul className={s.list}>
-            {contacts.map(contact => (
+            {visibleContacts.map(contact => (
               <li key={contact.id} className={s.item}>
                 <p className={s.graf}>
                   {contact.name} : {contact.phone}
