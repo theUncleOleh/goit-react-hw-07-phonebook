@@ -8,7 +8,6 @@ import { getFilterSelector } from 'redux/contacts/items-selectors';
 import ContactListItem from 'components/ContactListItem/ContactListItem';
 import {
   useGetAllContactsQuery,
-  useDeleteContactMutation,
   useAddContactMutation,
 } from 'redux/contacts/itemsOperations';
 import Loader from 'components/Loader';
