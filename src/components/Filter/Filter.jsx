@@ -6,11 +6,11 @@ import { filter } from 'redux/contacts/items-slice';
 
 export default function Filter() {
   const value = useSelector(state => state.filter.value);
-  console.log(value);
+  console.log();
   const dispatch = useDispatch();
   const handleChange = e => {
     dispatch(filter(e.target.value));
-    console.log(e.currentTarget.value);
+    console.log();
   };
   return (
     <label className={s.label}>

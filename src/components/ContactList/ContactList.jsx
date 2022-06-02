@@ -17,8 +17,6 @@ import Filter from 'components/Filter';
 
 export default function ContactList() {
   const { data: contacts, isLoading, error } = useGetAllContactsQuery();
-  // const [deleteContact, { isLoading: isDeliting }, data] =
-  //   useDeleteContactMutation();
   const [createContact, { isLoading: isCreate }] = useAddContactMutation();
   const filter = useSelector(getFilterSelector);
   console.log(filter);
@@ -38,17 +36,6 @@ export default function ContactList() {
     createContact(contact);
     toast.success(`${contact.name} was added to contacts!`);
   };
-  //   const toNormalizeName = contact.name.toLocaleLowerCase();
-  //   const name = contacts.find(
-  //     ({ name }) => name.toLocaleLowerCase() === toNormalizeName
-  //   );
-
-  //   if (name) {
-  //     return toast.error(`${contact.name} is already in contacts`);
-  //   }
-  //   createContact(contact);
-  //   toast.success(`${contact.name} was added to contacts!`);
-  // };
 
   let visibleContacts = [];
   const getVisibleContacts = () => {
@@ -73,14 +60,16 @@ export default function ContactList() {
         <>{<Loader />}</>
       ) : contacts ? (
         <>
-          {visibleContacts.map(contact => (
-            <ContactListItem
-              key={contact.id}
-              id={contact.id}
-              name={contact.name}
-              phone={contact.phone}
-            />
-          ))}
+          <ul className={s.list}>
+            {visibleContacts.map(contact => (
+              <ContactListItem
+                key={contact.id}
+                id={contact.id}
+                name={contact.name}
+                phone={contact.phone}
+              />
+            ))}
+          </ul>
         </>
       ) : null}
 
