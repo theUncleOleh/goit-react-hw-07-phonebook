@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import s from './Form.module.css';
+import ScaleLoader from 'react-spinners/ScaleLoader';
+
 // import { useAddContactMutation } from 'redux/contacts/itemsOperations';
-export default function Form({onSubmit}) {
+export default function Form({ onSubmit, isLoading }) {
   // const [addContacts] = useAddContactMutation();
   // const handleSubmit = e => {
   //   e.preventDefault();
@@ -12,42 +14,42 @@ export default function Form({onSubmit}) {
   //   addContacts({ name, phone });
   //   e.currentTarget.reset();
   // };
-    const [name, setName] = useState('');
-    const [phone, setPhone] = useState('');
-  
-    const handleChange = event => {
-      const { name, value } = event.target;
-      switch (name) {
-        case 'name':
-          setName(value);
-          break;
-        case 'phone':
-          setPhone(value);
-          break;
-        default:
-          return;
-      }
-    };
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
 
-    const handleSubmit = event => {
-      event.preventDefault();    
-    const formPhone = numberFormatting(phone)
-     const contact = {name, phone: formPhone}
-      onSubmit(contact);
-      reset();
-    };  
-    const numberFormatting = phone => {
-      const array = [...phone];
-      for (let i = 3; i < array.length - 1; i += 3) {
-        array.splice(i, 0, '-');
-      }
-      return array.join('');
-    };
+  const handleChange = event => {
+    const { name, value } = event.target;
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+      case 'phone':
+        setPhone(value);
+        break;
+      default:
+        return;
+    }
+  };
 
-    const reset = () => {
-      setName('');
-      setPhone('');
-    };
+  const handleSubmit = event => {
+    event.preventDefault();
+    const formPhone = numberFormatting(phone);
+    const contact = { name, phone: formPhone };
+    onSubmit(contact);
+    reset();
+  };
+  const numberFormatting = phone => {
+    const array = [...phone];
+    for (let i = 3; i < array.length - 1; i += 3) {
+      array.splice(i, 0, '-');
+    }
+    return array.join('');
+  };
+
+  const reset = () => {
+    setName('');
+    setPhone('');
+  };
 
   return (
     <form onSubmit={handleSubmit} className={s.form}>
@@ -74,14 +76,18 @@ export default function Form({onSubmit}) {
           type="tel"
           name="phone"
           value={phone}
-onChange={handleChange}
+          onChange={handleChange}
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
         />
       </label>
-      <button type="submit" className={s.button}>
-        Add contact
+      <button type="submit" disabled={isLoading} className={s.button}>
+        {isLoading ? (
+          <ScaleLoader height={15} width={5} margin={2} />
+        ) : (
+          'Create'
+        )}
       </button>
     </form>
   );

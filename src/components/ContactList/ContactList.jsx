@@ -4,8 +4,8 @@ import { Fragment } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import s from './ContactList.module.css';
 import { useSelector } from 'react-redux';
-// import { getFilterSelector } from 'redux/contacts/items-selectors';
-//  import { itemsOperations } from 'redux/contacts';
+import { getFilterSelector } from 'redux/contacts/items-selectors';
+import ContactListItem from 'components/ContactListItem/ContactListItem';
 import {
   useGetAllContactsQuery,
   useDeleteContactMutation,
@@ -18,20 +18,17 @@ import Filter from 'components/Filter';
 
 export default function ContactList() {
   const { data: contacts, isLoading, error } = useGetAllContactsQuery();
-  const [deleteContact, { isLoading: isDeliting }] = useDeleteContactMutation();
-  const [createContact] = useAddContactMutation();
-  const filter = useSelector(state=> state.filter.value);
+  // const [deleteContact, { isLoading: isDeliting }, data] =
+  //   useDeleteContactMutation();
+  const [createContact, { isLoading: isCreate }] = useAddContactMutation();
+  const filter = useSelector(getFilterSelector);
   console.log(filter);
   console.log(contacts);
-
-  //  const dispatch = useDispatch();
-  //  const contacts = useSelector(itemsSelectors.getContactsSelector);
-  //  const value = useSelector(itemsSelectors.getFilterSelector);
-  //  console.log(contacts);
 
   const addContacts = contact => {
     console.log(contact);
     const toNormalizeName = contact.name.toLocaleLowerCase();
+
     const name = contacts.find(
       ({ name }) => name.toLocaleLowerCase() === toNormalizeName
     );
@@ -42,33 +39,32 @@ export default function ContactList() {
     createContact(contact);
     toast.success(`${contact.name} was added to contacts!`);
   };
-  
-let visibleContacts = [];
-const getFilteringContactsServer = () => {
-    const normalizeFiltr = filter.toLowerCase();
-    return contacts.filter(({ name }) =>
-      name.toLowerCase().includes(normalizeFiltr)
-    );
-  };  
-  if (!isLoading && !error) {
-    // console.log(contacts);
-    visibleContacts = getFilteringContactsServer();
-  }
-  console.log(visibleContacts);
+  //   const toNormalizeName = contact.name.toLocaleLowerCase();
+  //   const name = contacts.find(
+  //     ({ name }) => name.toLocaleLowerCase() === toNormalizeName
+  //   );
 
-  
-  
-  // const deleteContact = id => {
-  //   // dispatch(remove(id));
+  //   if (name) {
+  //     return toast.error(`${contact.name} is already in contacts`);
+  //   }
+  //   createContact(contact);
+  //   toast.success(`${contact.name} was added to contacts!`);
   // };
 
-  // useEffect(() => {
-  //   dispatch(itemsOperations.fetchContacts());
-  // }, [dispatch]);
+  let visibleContacts = [];
+  const getVisibleContacts = () => {
+    const normalizeFilter = filter.toLowerCase();
+    return contacts.filter(({ name }) =>
+      name.toLowerCase().includes(normalizeFilter)
+    );
+  };
+  if (!isLoading && !error) {
+    visibleContacts = getVisibleContacts();
+  }
 
   return (
     <Fragment>
-      <Form onSubmit={addContacts} />
+      <Form onSubmit={addContacts} isLoading={isCreate} />
 
       <Filter />
       <h2 className={s.title}>Contacts</h2>
@@ -78,22 +74,14 @@ const getFilteringContactsServer = () => {
         <>{<Loader />}</>
       ) : contacts ? (
         <>
-          <ul className={s.list}>
-            {visibleContacts.map(contact => (
-              <li key={contact.id} className={s.item}>
-                <p className={s.graf}>
-                  {contact.name} : {contact.phone}
-                </p>
-                <button
-                  type="button"
-                  className={s.button}
-                  onClick={() => deleteContact(contact.id)}
-                >
-                  {isDeliting ? 'Deliting...' : 'Delete'}
-                </button>
-              </li>
-            ))}
-          </ul>
+          {visibleContacts.map(contact => (
+            <ContactListItem
+              key={contact.id}
+              id={contact.id}
+              name={contact.name}
+              phone={contact.phone}
+            />
+          ))}
         </>
       ) : null}
 
@@ -111,3 +99,5 @@ ContactList.propTypes = {
     })
   ),
 };
+
+
