@@ -43,17 +43,6 @@ export default function ContactList() {
 
   const visibleContacts = getVisibleContacts();
 
-  // let visibleContacts = [];
-  // const getVisibleContacts = () => {
-  //   const normalizeFilter = filter.toLowerCase();
-  //   return contacts.filter(({ name }) =>
-  //     name.toLowerCase().includes(normalizeFilter)
-  //   );
-  // };
-  // if (!isLoading && !error) {
-  //   visibleContacts = getVisibleContacts();
-  // }
-
   return (
     <Fragment>
       <Form onSubmit={addContacts} isLoading={isCreate} />
