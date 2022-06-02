@@ -17,7 +17,7 @@ export default function ContactListItem({ id, name, phone }) {
         type="button"
         disabled={isDeliting}
         className={s.button}
-        onClick={deleteListItem}
+        onClick={() => deleteListItem(id)}
       >
         {isDeliting ? (
           <ScaleLoader height={15} width={5} margin={2} />
