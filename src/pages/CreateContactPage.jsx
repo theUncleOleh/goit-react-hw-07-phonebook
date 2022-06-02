@@ -1,11 +1,10 @@
 import PageHeading from 'components/PageHeading';
-import ContactList from 'components/ContactList';
-
-export default function PhoneBookPage() {
+import AddContact from 'components/AddContact';
+export default function CreateContactPage() {
   return (
     <>
       <PageHeading text="Phonebook" />
-      <ContactList />
+      <AddContact />
     </>
   );
 }

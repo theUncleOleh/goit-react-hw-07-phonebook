@@ -6,13 +6,13 @@ const Navigation = () => (
       to="/"
       className={({ isActive }) => (!isActive ? s.link : s.active)}
     >
-      Phonebook
+      Create contact
     </NavLink>
     <NavLink
-      to="/nextpage"
+      to="/list"
       className={({ isActive }) => (!isActive ? s.link : s.active)}
     >
-      Secondpage
+      Contact list
     </NavLink>
   </nav>
 );

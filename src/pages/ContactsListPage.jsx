@@ -1,11 +1,12 @@
 import PageHeading from 'components/PageHeading';
 import ButtonToBack from 'components/ButtonToBack';
-export default function SecondPage() {
+import ContactList from 'components/ContactList';
+export default function ContactsListPage() {
   return (
     <div>
-      <PageHeading text="Second page" />
+      <PageHeading text="Contacts list" />
       <ButtonToBack />
-      <h2>Sorry we have nothing for you</h2>
+      <ContactList />
     </div>
   );
 }

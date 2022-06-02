@@ -11,7 +11,7 @@ export default function BackToTrendButton() {
   };
   return (
     <button type="button" onClick={backToTrendButton} className={s.button}>
-      Back to previous page
+      Previous page
     </button>
   );
 }
