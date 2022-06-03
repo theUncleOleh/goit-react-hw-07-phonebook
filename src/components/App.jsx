@@ -15,8 +15,8 @@ export default function App() {
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<CreateContactPage />} />
-            <Route path="list" element={<ContactsListPage />} />
+            <Route index element={<ContactsListPage />} />
+            <Route path="create" element={<CreateContactPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>

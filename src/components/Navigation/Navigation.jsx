@@ -6,13 +6,14 @@ const Navigation = () => (
       to="/"
       className={({ isActive }) => (!isActive ? s.link : s.active)}
     >
-      Create contact
+      {' '}
+      Contact list
     </NavLink>
     <NavLink
-      to="/list"
+      to="/create"
       className={({ isActive }) => (!isActive ? s.link : s.active)}
     >
-      Contact list
+      Create contact
     </NavLink>
   </nav>
 );

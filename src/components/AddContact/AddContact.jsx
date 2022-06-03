@@ -19,7 +19,7 @@ export default function AddContact({ contacts }) {
     }
     createContact(contact);
     toast.success(`${contact.name} was added to contacts!`);
-    navigation('/list');
+    navigation('/');
   };
   return <Form onSubmit={addContacts} isLoading={isCreate} />;
 }
